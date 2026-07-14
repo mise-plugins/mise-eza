@@ -31,7 +31,7 @@ list_github_tags() {
 
 list_quickinstall_versions() {
   git ls-remote --tags --refs "$GH_REPO_CBIN" 'refs/tags/eza-*' |
-    grep -o 'refs/tags/eza-.*' | cut -d- -f2-
+    sed -n 's|.*refs/tags/eza-||p'
 }
 
 list_all_versions() {
