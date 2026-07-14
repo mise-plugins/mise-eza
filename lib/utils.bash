@@ -29,8 +29,19 @@ list_github_tags() {
     sed 's/^v//'
 }
 
+list_quickinstall_versions() {
+  git ls-remote --tags --refs "$GH_REPO_CBIN" 'refs/tags/eza-*' |
+    sed -n 's|.*refs/tags/eza-||p'
+}
+
 list_all_versions() {
-  list_github_tags
+  if [ "$(uname -s)" = "Darwin" ]; then
+    # macOS installs use cargo-quickinstall artifacts, so only advertise
+    # versions that cargo-quickinstall has actually published.
+    list_quickinstall_versions
+  else
+    list_github_tags
+  fi
 }
 
 download_release() {
